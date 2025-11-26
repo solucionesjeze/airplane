@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Control de Vuelos del Aeropuerto</title>
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<h1>Control de Vuelos del Aeropuerto</h1>
+<div class="zona-aviones">
+    <i class="fa-solid fa-plane-departure icono-vuelo despegue"
+       draggable="true"
+       data-tipo="despegue"
+       data-color="#16a34a"
+       ondragstart="onDragStart(event)"></i>
+    <i class="fa-solid fa-plane-arrival icono-vuelo aterrizaje"
+       draggable="true"
+       data-tipo="aterrizaje"
+       data-color="#dc2626"
+       ondragstart="onDragStart(event)"></i>
+</div>
+<div class="contenedores">
+    <div class="panel toma-despegues destino"
+         data-zona="despegue"
+         ondragover="onDragOver(event)"
+         ondragleave="onDragLeave(event)"
+         ondrop="onDrop(event)">
+        <h2>Vuelos Despegados</h2>
+        <div class="contador" id="contador-despegues">0</div>
+    </div>
+    <div class="panel toma-aterrizajes destino"
+         data-zona="aterrizaje"
+         ondragover="onDragOver(event)"
+         ondragleave="onDragLeave(event)"
+         ondrop="onDrop(event)">
+        <h2>Vuelos Aterrizados</h2>
+        <div class="contador" id="contador-aterrizajes">0</div>
+    </div>
+    <div class="panel toma-papelera destino"
+         data-zona="papelera"
+         ondragover="onDragOver(event)"
+         ondragleave="onDragLeave(event)"
+         ondrop="onDrop(event)">
+        <h2>Papelera</h2>
+        <i class="fa-solid fa-trash-can icono-papelera"></i>
+    </div>
+</div>
+<p class="texto-instruccion">Arrastra los iconos de avión a las áreas correspondientes.</p>
+<script>
+    let contadorDespegues = 0;
+    let contadorAterrizajes = 0;
+    function actualizarContadores() {
+        document.getElementById("contador-despegues").textContent = contadorDespegues;
+        document.getElementById("contador-aterrizajes").textContent = contadorAterrizajes;
+    }
+    function onDragStart(ev) {
+        const element = ev.target;
+        const data = {
+            tipo: element.dataset.tipo,
+            color: element.dataset.color
+        };
+        ev.dataTransfer.setData("application/json", JSON.stringify(data));
+    }
+    function onDragOver(ev) {
+        ev.preventDefault();
+        ev.currentTarget.classList.add("drag-over");
+    }
+    function onDragLeave(ev) {
+        ev.currentTarget.classList.remove("drag-over");
+    }
+    function onDrop(ev) {
+        ev.preventDefault();
+        ev.currentTarget.classList.remove("drag-over");
+
+        const jsonData = ev.dataTransfer.getData("application/json");
+        if (!jsonData) return;
+
+        const data = JSON.parse(jsonData);
+        const zona = ev.currentTarget.dataset.zona;
+
+        if (zona === "despegue" && data.tipo === "despegue") {
+            contadorDespegues++;
+        } else if (zona === "aterrizaje" && data.tipo === "aterrizaje") {
+            contadorAterrizajes++;
+        }
+        else if (zona === "papelera") {
+            if (data.tipo === "despegue" && contadorDespegues > 0) contadorDespegues--;
+            if (data.tipo === "aterrizaje" && contadorAterrizajes > 0) contadorAterrizajes--;
+        }
+        actualizarContadores();
+    }
+</script>
+</body>
+</html>
