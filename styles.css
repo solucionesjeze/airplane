@@ -34,11 +34,11 @@
         }
 
         .icono-vuelo.despegue {
-            color: #16a34a;
+            color: #60d9cf;
         }
 
         .icono-vuelo.aterrizaje {
-            color: #dc2626;
+            color: #dc2690;
         }
 
         .contenedores {
@@ -64,11 +64,11 @@
         }
 
         .panel.toma-despegues {
-            border-color: #38bdf8;
+            border-color: #f98ccd;
         }
 
         .panel.toma-aterrizajes {
-            border-color: #60a5fa;
+            border-color: #f4ace5;
         }
 
         .panel.toma-papelera {
@@ -93,7 +93,7 @@
         }
 
         .panel.drag-over {
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.6);
+            box-shadow: 0 0 0 3px rgba(121, 136, 162, 0.6);
         }
 
         .texto-instruccion {
